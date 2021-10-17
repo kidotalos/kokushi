@@ -1,4 +1,4 @@
-import { FormControl, List, Paper, TextField } from "@material-ui/core";
+import { FormControl, List, TextField } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import AddCircleOutlineOutlined from "@material-ui/icons/AddCircleOutlineOutlined";
@@ -12,8 +12,12 @@ const App: React.FC = () => {
   const [inputName, setInputName] = useState("");
   // この画面が呼ばれるごとに実行される（firebaseの中を見に行っている）
   useEffect(() => {
+    // dbに接続して、情報をもらいにいく(snapshotには複数のplayerの情報が入っとる)
+    // リロードとかせんでも、自動的に情報見てくれる！すごい！
     const unSub = db.collection("players").onSnapshot((snapshot) => {
       setPlayers(
+        // docsにはidごとのデータが１件１件入っている
+        // フィールドで設定したものは.data()の中にある
         snapshot.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
@@ -21,6 +25,7 @@ const App: React.FC = () => {
         }))
       );
     });
+    // 監視をやめる
     return () => unSub();
   }, []);
 
@@ -33,6 +38,12 @@ const App: React.FC = () => {
       point: 0,
     });
     setInputName("");
+  };
+
+  const checkNumber = () => {
+    if (players.length > 4) {
+      alert("人数は４人までです！");
+    }
   };
 
   return (
@@ -81,6 +92,7 @@ const App: React.FC = () => {
         className={styles.button}
         component={Link}
         to="/result"
+        onClick={checkNumber}
       >
         {"結果を見る"}
       </Button>

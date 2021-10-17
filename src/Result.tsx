@@ -8,7 +8,7 @@ import { db } from "./firebase";
 
 const Result: React.FC = () => {
   const [players, setPlayers] = useState([
-    { id: "", name: "", ranking: 0, result: 0, point: 0 },
+    { id: "", name: "", ranking: 0, result: 0, point: "" },
   ]);
 
   interface PLAYER {
@@ -16,7 +16,7 @@ const Result: React.FC = () => {
     name: string;
     ranking: number;
     result: number;
-    point: number;
+    point: string;
   }
   // let playerOut: PLAYER[];
 
@@ -40,20 +40,60 @@ const Result: React.FC = () => {
 
   const playerInput = (playerIn: PLAYER[]) => {
     for (let i = 0; i < playerIn.length; i++) {
+      // 文字列に変換する前のポイント
+      let playerPoint: number = 0;
+      // 五捨六入する前のポイント
+      let playerBeforeGosyaPoint: string = "";
+      // 五捨六入したあとのポイント
+      let playerAfterGosyaPoint: string = "";
+      // 最終的なポイント
+      let playerFinallGosyaPoint: string = "";
       let playerRank = i + 1;
-      let playerPoint = playerIn[i].result - 30000;
+      // ３万点返ししたあとのポイント
+      let playerFinalResult = playerIn[i].result - 30000;
+      // 五捨六入したあとのポイントするか確かめるメソッド
+      let checkGosya = (playerBeforeGosyaPoint: string): string => {
+        let chars: string[] = [];
+        let replace = "";
+        if (playerBeforeGosyaPoint.substr(-3, 1) === "5") {
+          chars = Array.from(playerBeforeGosyaPoint);
+          for (let i = 0; chars.length; i++) {
+            if (chars.length - i === 3) {
+              chars[i] = "4";
+            }
+            replace = replace + chars[i];
+          }
+          return replace;
+        }
+      };
       switch (i) {
         case 0:
-          playerIn[i].point = playerPoint + 40000; //式が値1に当てはまる場合に実行される
+          playerPoint = playerFinalResult + 40000; //式が値1に当てはまる場合に実行される
+          playerBeforeGosyaPoint = playerPoint.toString();
+          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
+          playerIn[i].point = playerFinallGosyaPoint;
           break;
         case 1:
-          playerIn[i].point = playerPoint + 10000; //式が値2に当てはまる場合に実行される
+          playerPoint = playerFinalResult + 10000; //式が値2に当てはまる場合に実行される
+          playerBeforeGosyaPoint = playerPoint.toString();
+          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
+          playerIn[i].point = playerFinallGosyaPoint;
           break;
         case 2:
-          playerIn[i].point = playerPoint - 10000; //式が値3に当てはまる場合に実行される
+          playerPoint = playerFinalResult - 10000; //式が値3に当てはまる場合に実行される
+          playerBeforeGosyaPoint = playerPoint.toString();
+          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
+          playerIn[i].point = playerFinallGosyaPoint;
           break;
         case 3:
-          playerIn[i].point = playerPoint - 20000; //式が値4に当てはまる場合に実行される
+          playerPoint = playerFinalResult - 20000; //式が値4に当てはまる場合に実行される
+          playerBeforeGosyaPoint = playerPoint.toString();
+          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
+          playerIn[i].point = playerFinallGosyaPoint;
           break;
       }
       playerIn[i].ranking = playerRank;
@@ -61,7 +101,6 @@ const Result: React.FC = () => {
     }
   };
   playerInput(players);
-  console.log(players);
 
   return (
     <div className={styles.result__body}>

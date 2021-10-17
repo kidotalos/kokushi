@@ -3,6 +3,7 @@ import "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
+// これは多分オブジェクト
 const firebaseApp = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
   authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,

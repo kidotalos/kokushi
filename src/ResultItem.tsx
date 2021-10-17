@@ -10,7 +10,7 @@ interface PROPS {
   name: string;
   ranking: number;
   result: number;
-  point: number;
+  point: string;
 }
 
 const ResultItem: React.FC<PROPS> = (props) => {
