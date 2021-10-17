@@ -1,0 +1,33 @@
+.result__body {
+  text-align: center;
+}
+
+.title__app {
+  font-size: 20px;
+  margin: 50px 0;
+}
+
+.header__img {
+  margin-bottom: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 200px;
+  height: 150px;
+}
+
+.player__result__all {
+  width: 100%;
+}
+
+.player__result {
+  margin: 20px auto;
+  padding: 0;
+  width: 80%;
+  background-color: ghostwhite;
+  border: 1px solid #282c34;
+}
+
+.button {
+  margin-bottom: 100px;
+}

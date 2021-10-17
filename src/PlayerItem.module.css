@@ -1,0 +1,29 @@
+.player {
+  width: 60%;
+  background-color: ghostwhite;
+  border: 1px solid #282c34;
+  /* background-color: bisque;
+  border: 1px solid #282c34; */
+  padding: 40px;
+  margin: 50px auto;
+}
+
+.player__details {
+  /* background-color: aqua;
+  border: 1px solid #282c34; */
+  margin: 20px auto;
+}
+
+.player__details p {
+  font-size: 5px;
+}
+
+.player__result {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.player__result button {
+  cursor: pointer;
+}

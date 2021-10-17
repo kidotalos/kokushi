@@ -1,0 +1,39 @@
+.App {
+  text-align: center;
+}
+
+.title__app {
+  font-size: 20px;
+  margin: 50px 0;
+}
+
+.header__img {
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 200px;
+  height: 150px;
+}
+
+.input__name {
+  display: flex;
+  width: 60%;
+  padding: 0 50px;
+  margin: 0 auto;
+  padding: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.name__button {
+  margin-left: 10px;
+}
+
+.name__button button {
+  cursor: pointer;
+}
+
+.button {
+  margin-bottom: 100px;
+}
