@@ -44,6 +44,8 @@ const Result: React.FC = () => {
       let playerPoint: number = 0;
       // 五捨六入する前のポイント
       let playerBeforeGosyaPoint: string = "";
+      // 4を5に置換したあとのポイント
+      let playerReplaceGsyaPoint: string = "";
       // 五捨六入したあとのポイント
       let playerAfterGosyaPoint: string = "";
       // 最終的なポイント
@@ -51,49 +53,71 @@ const Result: React.FC = () => {
       let playerRank = i + 1;
       // ３万点返ししたあとのポイント
       let playerFinalResult = playerIn[i].result - 30000;
+
       // 五捨六入したあとのポイントするか確かめるメソッド
       let checkGosya = (playerBeforeGosyaPoint: string): string => {
         let chars: string[] = [];
         let replace = "";
         if (playerBeforeGosyaPoint.substr(-3, 1) === "5") {
           chars = Array.from(playerBeforeGosyaPoint);
-          for (let i = 0; chars.length; i++) {
+          for (let i = 0; i < chars.length; i++) {
             if (chars.length - i === 3) {
               chars[i] = "4";
             }
             replace = replace + chars[i];
           }
+          // 5を4にしたやつ返してる
           return replace;
+        } else {
+          return playerBeforeGosyaPoint;
         }
       };
+
+      // マイナスかどうか確かめるメソッド
+      let checkPoint = (playerReplaceGsyaPoint: string): string => {
+        let pointStr = playerReplaceGsyaPoint;
+        let pointNum = Number(pointStr);
+        if (pointNum < 0) {
+          let pointStrRe = pointNum.toString();
+          pointStrRe = pointStr.substr(0, 3);
+          return pointStrRe;
+        } else if (pointNum.toString().length === 6) {
+          return playerReplaceGsyaPoint.substr(0, 3);
+        } else if (pointNum.toString().length === 5) {
+          return playerReplaceGsyaPoint.substr(0, 2);
+        } else {
+          return playerReplaceGsyaPoint.substr(0, 1);
+        }
+      };
+
       switch (i) {
         case 0:
           playerPoint = playerFinalResult + 40000; //式が値1に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
-          playerIn[i].point = playerFinallGosyaPoint;
+          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerIn[i].point = playerAfterGosyaPoint;
           break;
         case 1:
           playerPoint = playerFinalResult + 10000; //式が値2に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
-          playerIn[i].point = playerFinallGosyaPoint;
+          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerIn[i].point = playerAfterGosyaPoint;
           break;
         case 2:
           playerPoint = playerFinalResult - 10000; //式が値3に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
-          playerIn[i].point = playerFinallGosyaPoint;
+          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerIn[i].point = playerAfterGosyaPoint;
           break;
         case 3:
           playerPoint = playerFinalResult - 20000; //式が値4に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerAfterGosyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerFinallGosyaPoint = playerAfterGosyaPoint.substr(0, 2);
-          playerIn[i].point = playerFinallGosyaPoint;
+          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerIn[i].point = playerAfterGosyaPoint;
           break;
       }
       playerIn[i].ranking = playerRank;
