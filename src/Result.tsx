@@ -48,8 +48,6 @@ const Result: React.FC = () => {
       let playerReplaceGsyaPoint: string = "";
       // 五捨六入したあとのポイント
       let playerAfterGosyaPoint: string = "";
-      // 最終的なポイント
-      let playerFinallGosyaPoint: string = "";
       let playerRank = i + 1;
       // ３万点返ししたあとのポイント
       let playerFinalResult = playerIn[i].result - 30000;
@@ -77,16 +75,66 @@ const Result: React.FC = () => {
       let checkPoint = (playerReplaceGsyaPoint: string): string => {
         let pointStr = playerReplaceGsyaPoint;
         let pointNum = Number(pointStr);
-        if (pointNum < 0) {
-          let pointStrRe = pointNum.toString();
-          pointStrRe = pointStr.substr(0, 3);
-          return pointStrRe;
+        let pointStrAfterSisya;
+        let pointStrRe;
+
+        if (pointNum > 0) {
+          if (pointNum.toString().length === 6) {
+            // 上から4桁目を四捨五入
+            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+            pointStrRe = pointStrAfterSisya.toString();
+            return pointStrRe.substr(0, 3);
+          } else if (pointNum.toString().length === 5) {
+            // 上から3桁目を四捨五入
+            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+            pointStrRe = pointStrAfterSisya.toString();
+            // 100000までいっていたら3桁返す
+            if (pointStrRe === "100000") {
+              return pointStrRe.substr(0, 3);
+            } else {
+              return pointStrRe.substr(0, 2);
+            }
+          } else if (pointNum.toString().length === 4) {
+            // 上から2桁目を四捨五入
+            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+            pointStrRe = pointStrAfterSisya.toString();
+            // 10000までいっていたら2桁返す
+            if (pointStrRe === "10000") {
+              return pointStrRe.substr(0, 2);
+            } else {
+              return pointStrRe.substr(0, 1);
+            }
+          } else {
+            // 上から1桁目を四捨五入
+            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+            pointStrRe = pointStrAfterSisya.toString();
+            return pointStrRe.substr(0, 1);
+          }
         } else if (pointNum.toString().length === 6) {
-          return playerReplaceGsyaPoint.substr(0, 3);
+          // 上から3桁目を四捨五入
+          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+          pointStrRe = pointStrAfterSisya.toString();
+          return pointStrRe.substr(0, 3);
         } else if (pointNum.toString().length === 5) {
-          return playerReplaceGsyaPoint.substr(0, 2);
+          // 上から2桁目を四捨五入
+          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+          pointStrRe = pointStrAfterSisya.toString();
+          // -10000までいっていたら3桁返す
+          if (pointStrRe === "10000") {
+            return pointStrRe.substr(0, 3);
+          } else {
+            return pointStrRe.substr(0, 2);
+          }
         } else {
-          return playerReplaceGsyaPoint.substr(0, 1);
+          // 上から1桁目を四捨五入
+          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
+          pointStrRe = pointStrAfterSisya.toString();
+          // -1000までいっていたら2桁返す
+          if (pointStrRe === "1000") {
+            return pointStrRe.substr(0, 2);
+          } else {
+            return pointStrRe.substr(0, 1);
+          }
         }
       };
 
