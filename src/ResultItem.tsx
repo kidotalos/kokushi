@@ -1,8 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { TextField } from "@material-ui/core";
-import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import { db } from "./firebase";
 import styles from "./ResultItem.module.css";
 
 interface PROPS {
