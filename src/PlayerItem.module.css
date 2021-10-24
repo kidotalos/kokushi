@@ -14,8 +14,10 @@
   margin: 20px auto;
 }
 
-.player__details p {
-  font-size: 5px;
+.player__name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .player__result {

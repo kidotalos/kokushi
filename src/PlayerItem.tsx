@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
+import PersonIcon from "@material-ui/icons/Person";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { db } from "./firebase";
@@ -32,8 +33,11 @@ const PlayerItem: React.FC<PROPS> = (props) => {
   return (
     <div className={styles.player}>
       <div className={styles.player__details}>
-        <h3>{props.name}</h3>
-        <p>入力した点数：{props.result}</p>
+        <div className={styles.player__name}>
+          <PersonIcon />
+          <h3>{props.name}</h3>
+        </div>
+        <h5>入力した点数：{props.result}</h5>
       </div>
       <div className={styles.player__result}>
         <div className={styles.edit__result}>
