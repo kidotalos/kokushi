@@ -18,20 +18,20 @@ const Result: React.FC = () => {
     result: number;
     point: string;
   }
-  // let playerOut: PLAYER[];
 
   useEffect(() => {
     const unSub = db
       .collection("players")
       .orderBy("result", "desc")
       .onSnapshot((snapshot) => {
+        // firestoreで管理しているのはnameとresultだけ
         setPlayers(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             name: doc.data().name,
-            ranking: doc.data().ranking,
+            ranking: 0,
             result: doc.data().result,
-            point: doc.data().point,
+            point: "",
           }))
         );
       });
@@ -40,25 +40,24 @@ const Result: React.FC = () => {
 
   const playerInput = (playerIn: PLAYER[]) => {
     for (let i = 0; i < playerIn.length; i++) {
-      // 文字列に変換する前のポイント
-      let playerPoint: number = 0;
-      // 五捨六入する前のポイント
-      let playerBeforeGosyaPoint: string = "";
-      // 4を5に置換したあとのポイント
-      let playerReplaceGsyaPoint: string = "";
-      // 五捨六入したあとのポイント
-      let playerAfterGosyaPoint: string = "";
-      let playerRank = i + 1;
-      // ３万点返ししたあとのポイント
-      let playerFinalResult = playerIn[i].result - 30000;
+      // プロパティ系
+      let playerRank = i + 1; // とりあえずランキングはindexが0スタートなので1を足して順位決め
+      let playerFinalResult = playerIn[i].result - 30000; // ３万点返ししたあとのポイント
+      let playerPoint: number = 0; // 文字列に変換する前のポイント
+      let playerBeforeGosyaPoint: string = ""; // 五捨六入する前のポイント
+      let playerReplaceGsyaPoint: string = ""; // 4を5に置換したあとのポイント
+      let playerAfterGosyaPoint: string = ""; // 五捨六入したあとのポイント
 
-      // 五捨六入したあとのポイントするか確かめるメソッド
+      // 五捨六入をしたいが形式的に四捨五入ですませるため、100の位が5だと4で返す
+      // こうするとで後は四捨五入するだけでよくなる
       let checkGosya = (playerBeforeGosyaPoint: string): string => {
         let chars: string[] = [];
         let replace = "";
+        // 100の位が5かどうか判定
         if (playerBeforeGosyaPoint.substr(-3, 1) === "5") {
           chars = Array.from(playerBeforeGosyaPoint);
           for (let i = 0; i < chars.length; i++) {
+            // 100の位の5を4で上書きする
             if (chars.length - i === 3) {
               chars[i] = "4";
             }
@@ -71,33 +70,27 @@ const Result: React.FC = () => {
         }
       };
 
-      // マイナスかどうか確かめるメソッド
+      // 四捨五入するメソッド
       let checkPoint = (playerReplaceGsyaPoint: string): string => {
         let pointStr = playerReplaceGsyaPoint;
         let pointNum = Number(pointStr);
-        let pointStrAfterSisya;
-        let pointStrRe;
+        let pointStrAfterSisya = Math.round(pointNum / 1000) * 1000; //100の位を四捨五入
+        let pointStrRe = pointStrAfterSisya.toString();
 
+        // まずはその値がプラスかマイナスか見る
+        // プラスとマイナスで四捨五入する場所が変わるため
         if (pointNum > 0) {
-          if (pointNum.toString().length === 6) {
-            // 上から4桁目を四捨五入
-            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-            pointStrRe = pointStrAfterSisya.toString();
+          // 後は桁数によって返すポイントを決める
+          if (pointStr.length === 6) {
             return pointStrRe.substr(0, 3);
-          } else if (pointNum.toString().length === 5) {
-            // 上から3桁目を四捨五入
-            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-            pointStrRe = pointStrAfterSisya.toString();
+          } else if (pointStr.length === 5) {
             // 100000までいっていたら3桁返す
             if (pointStrRe === "100000") {
               return pointStrRe.substr(0, 3);
             } else {
               return pointStrRe.substr(0, 2);
             }
-          } else if (pointNum.toString().length === 4) {
-            // 上から2桁目を四捨五入
-            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-            pointStrRe = pointStrAfterSisya.toString();
+          } else if (pointStr.length === 4) {
             // 10000までいっていたら2桁返す
             if (pointStrRe === "10000") {
               return pointStrRe.substr(0, 2);
@@ -105,20 +98,13 @@ const Result: React.FC = () => {
               return pointStrRe.substr(0, 1);
             }
           } else {
-            // 上から1桁目を四捨五入
-            pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-            pointStrRe = pointStrAfterSisya.toString();
             return pointStrRe.substr(0, 1);
           }
-        } else if (pointNum.toString().length === 6) {
+          // こっからはマイナスの場合の処理
+        } else if (pointStr.length === 6) {
           // 上から3桁目を四捨五入
-          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-          pointStrRe = pointStrAfterSisya.toString();
           return pointStrRe.substr(0, 3);
-        } else if (pointNum.toString().length === 5) {
-          // 上から2桁目を四捨五入
-          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-          pointStrRe = pointStrAfterSisya.toString();
+        } else if (pointStr.length === 5) {
           // -10000までいっていたら3桁返す
           if (pointStrRe === "10000") {
             return pointStrRe.substr(0, 3);
@@ -126,9 +112,6 @@ const Result: React.FC = () => {
             return pointStrRe.substr(0, 2);
           }
         } else {
-          // 上から1桁目を四捨五入
-          pointStrAfterSisya = Math.round(pointNum / 1000) * 1000;
-          pointStrRe = pointStrAfterSisya.toString();
           // -1000までいっていたら2桁返す
           if (pointStrRe === "1000") {
             return pointStrRe.substr(0, 2);
@@ -168,10 +151,13 @@ const Result: React.FC = () => {
           playerIn[i].point = playerAfterGosyaPoint;
           break;
       }
+      // ランキングを代入
       playerIn[i].ranking = playerRank;
-      // console.log(playerIn[i].name);
     }
   };
+
+  // playersはplayerの情報が入った配列
+  // この処理で最終的なポイントを返している
   playerInput(players);
 
   return (
@@ -194,7 +180,6 @@ const Result: React.FC = () => {
                 id={player.id}
                 name={player.name}
                 ranking={player.ranking}
-                result={player.result}
                 point={player.point}
               />
             </div>
@@ -208,7 +193,7 @@ const Result: React.FC = () => {
         component={Link}
         to="/"
       >
-        {"入力画面へ"}
+        入力画面へ
       </Button>
     </div>
   );

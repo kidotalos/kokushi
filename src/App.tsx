@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 const App: React.FC = () => {
   const [players, setPlayers] = useState([{ id: "", name: "", result: 0 }]);
   const [inputName, setInputName] = useState("");
+
+  
   // この画面が呼ばれるごとに実行される（firebaseの中を見に行っている）
   useEffect(() => {
     // dbに接続して、情報をもらいにいく(snapshotには複数のplayerの情報が入っとる)
@@ -33,9 +35,7 @@ const App: React.FC = () => {
     // 入力された名前と結果はとりあえず０で登録
     db.collection("players").add({
       name: inputName,
-      ranking: 0,
       result: 0,
-      point: 0,
     });
     setInputName("");
   };
@@ -61,7 +61,7 @@ const App: React.FC = () => {
               InputLabelProps={{
                 shrink: true,
               }}
-              label="名前は？"
+              label="プレイヤー名は？"
               value={inputName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setInputName(e.target.value)
@@ -94,7 +94,7 @@ const App: React.FC = () => {
         to="/result"
         onClick={checkNumber}
       >
-        {"結果を見る"}
+        結果を見る
       </Button>
     </div>
   );

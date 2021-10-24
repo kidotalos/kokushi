@@ -42,7 +42,6 @@ const PlayerItem: React.FC<PROPS> = (props) => {
               shrink: true,
             }}
             label="点数は？"
-            // value={result}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setResult(parseInt(e.target.value))
             }

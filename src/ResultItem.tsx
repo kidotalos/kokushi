@@ -4,7 +4,6 @@ interface PROPS {
   id: string;
   name: string;
   ranking: number;
-  result: number;
   point: string;
 }
 
