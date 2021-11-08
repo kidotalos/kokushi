@@ -74,7 +74,7 @@ const Result: React.FC = () => {
       let checkPoint = (playerReplaceGsyaPoint: string): string => {
         let pointStr = playerReplaceGsyaPoint;
         let pointNum = Number(pointStr);
-        let pointStrAfterSisya = Math.round(pointNum / 1000) * 1000; //100の位を四捨五入
+        let pointStrAfterSisya = Math.round(pointNum / 1000) * 1000; //100の位を四捨五入
         let pointStrRe = pointStrAfterSisya.toString();
 
         // まずはその値がプラスかマイナスか見る
