@@ -25,26 +25,30 @@ const Result: React.FC = () => {
       .orderBy("result", "desc")
       .onSnapshot((snapshot) => {
         // firestoreで管理しているのはnameとresultだけ
-        const playersDB = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name,
-          ranking: 0,
-          result: doc.data().result,
-          point: "",
-        }));
-        const resultplayers = playerInput(playersDB);
-        resultplayers[0].point = (
-          Number(resultplayers[1].point) +
-          Number(resultplayers[2].point) +
-          Number(resultplayers[3].point)
-        ).toString();
-        setPlayers(resultplayers);
+        setPlayers(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            name: doc.data().name,
+            ranking: 0,
+            result: doc.data().result,
+            point: "",
+          }))
+        );
       });
     return () => unSub();
   }, []);
 
-  const playerInput = (playerIn: PLAYER[]) => {
-    // let resultForIttya = 0;
+  useEffect(() => {
+    console.log(players);
+    if (players[0].ranking === 0) {
+      // playersはplayerの情報が入った配列
+      // この処理で最終的なポイントを返している
+      playerInput(players);
+    }
+  }, [players]);
+
+  const playerInput = (players: PLAYER[]) => {
+    const playerIn = [...players];
     for (let i = 0; i < playerIn.length; i++) {
       // プロパティ系
       let playerRank = i + 1; // とりあえずランキングはindexが0スタートなので1を足して順位決め
@@ -157,30 +161,16 @@ const Result: React.FC = () => {
       playerIn[i].ranking = playerRank;
     }
 
-    return playerIn;
-    // console.log(Number(playerIn[1].point));
-    // console.log(
-    //   Number(playerIn[1].point) +
-    //     Number(playerIn[2].point) +
-    //     Number(playerIn[3].point)
-    // );
-    // playerIn[0].point = resultForIttya.toString();
+    // いっちゃは全員の点数を足した数
+    if (playerIn[0]) {
+      playerIn[0].point = (
+        Number(playerIn[1]?.point) +
+        Number(playerIn[2]?.point) +
+        Number(playerIn[3]?.point)
+      ).toString();
+    }
+    setPlayers(playerIn);
   };
-
-  // console.log(players);
-  // console.log(players[0]);
-  // console.log(players[1]);
-  // console.log(players[2]);
-  // console.log(players[3]);
-
-  // 1っちゃの点数をここで計算
-  // 全員の点数から引く
-
-  // players[0].point = (
-  //   Number(players[1].point) +
-  //   Number(players[2].point) +
-  //   Number(players[3].point)
-  // ).toString();
 
   return (
     <div className={styles.result__body}>

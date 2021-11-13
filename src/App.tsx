@@ -4,14 +4,14 @@ import { db } from "./firebase";
 import AddCircleOutlineOutlined from "@material-ui/icons/AddCircleOutlineOutlined";
 import PlayerItem from "./PlayerItem";
 import styles from "./App.module.css";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 const App: React.FC = () => {
   const [players, setPlayers] = useState([{ id: "", name: "", result: 0 }]);
   const [inputName, setInputName] = useState("");
+  const history = useHistory();
 
-  
   // この画面が呼ばれるごとに実行される（firebaseの中を見に行っている）
   useEffect(() => {
     // dbに接続して、情報をもらいにいく(snapshotには複数のplayerの情報が入っとる)
@@ -41,8 +41,10 @@ const App: React.FC = () => {
   };
 
   const checkNumber = () => {
-    if (players.length > 4) {
+    if (players.length !== 4) {
       alert("人数は４人までです！");
+    } else {
+      history.push("/result");
     }
   };
 
@@ -90,8 +92,6 @@ const App: React.FC = () => {
         variant="contained"
         color="primary"
         className={styles.button}
-        component={Link}
-        to="/result"
         onClick={checkNumber}
       >
         結果を見る
