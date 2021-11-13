@@ -156,31 +156,8 @@ const Result: React.FC = () => {
       // ランキングを代入
       playerIn[i].ranking = playerRank;
     }
-
     return playerIn;
-    // console.log(Number(playerIn[1].point));
-    // console.log(
-    //   Number(playerIn[1].point) +
-    //     Number(playerIn[2].point) +
-    //     Number(playerIn[3].point)
-    // );
-    // playerIn[0].point = resultForIttya.toString();
   };
-
-  // console.log(players);
-  // console.log(players[0]);
-  // console.log(players[1]);
-  // console.log(players[2]);
-  // console.log(players[3]);
-
-  // 1っちゃの点数をここで計算
-  // 全員の点数から引く
-
-  // players[0].point = (
-  //   Number(players[1].point) +
-  //   Number(players[2].point) +
-  //   Number(players[3].point)
-  // ).toString();
 
   return (
     <div className={styles.result__body}>
