@@ -7,6 +7,7 @@ import { List } from "@material-ui/core";
 import { db } from "./firebase";
 
 const Result: React.FC = () => {
+  // ステートが変更される度に関数が呼ばれる
   const [players, setPlayers] = useState([
     { id: "", name: "", ranking: 0, result: 0, point: "" },
   ]);
@@ -39,8 +40,7 @@ const Result: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(players);
-    if (players[0].ranking === 0) {
+    if (players[0].point === "") {
       // playersはplayerの情報が入った配列
       // この処理で最終的なポイントを返している
       playerInput(players);
@@ -161,13 +161,13 @@ const Result: React.FC = () => {
       playerIn[i].ranking = playerRank;
     }
 
-    // いっちゃは全員の点数を足した数
+    // いっちゃは全員の点数を足した数にマイナスをかけた数
     if (playerIn[0]) {
-      playerIn[0].point = (
+      playerIn[0].point = (-(
         Number(playerIn[1]?.point) +
         Number(playerIn[2]?.point) +
         Number(playerIn[3]?.point)
-      ).toString();
+      )).toString();
     }
     setPlayers(playerIn);
   };
