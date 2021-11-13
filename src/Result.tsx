@@ -44,7 +44,6 @@ const Result: React.FC = () => {
   }, []);
 
   const playerInput = (playerIn: PLAYER[]) => {
-    // let resultForIttya = 0;
     for (let i = 0; i < playerIn.length; i++) {
       // プロパティ系
       let playerRank = i + 1; // とりあえずランキングはindexが0スタートなので1を足して順位決め
