@@ -33,11 +33,11 @@ const Result: React.FC = () => {
           point: "",
         }));
         const resultplayers = playerInput(playersDB);
-        resultplayers[0].point = (
+        resultplayers[0].point = (-(
           Number(resultplayers[1].point) +
           Number(resultplayers[2].point) +
           Number(resultplayers[3].point)
-        ).toString();
+        )).toString();
         setPlayers(resultplayers);
       });
     return () => unSub();
@@ -50,7 +50,7 @@ const Result: React.FC = () => {
       let playerFinalResult = playerIn[i].result - 30000; // ３万点返ししたあとのポイント
       let playerPoint: number = 0; // 文字列に変換する前のポイント
       let playerBeforeGosyaPoint: string = ""; // 五捨六入する前のポイント
-      let playerReplaceGsyaPoint: string = ""; // 4を5に置換したあとのポイント
+      let playerReplaceGosyaPoint: string = ""; // 4を5に置換したあとのポイント
       let playerAfterGosyaPoint: string = ""; // 五捨六入したあとのポイント
 
       // 五捨六入をしたいが形式的に四捨五入ですませるため、100の位が5だと4で返す
@@ -76,8 +76,8 @@ const Result: React.FC = () => {
       };
 
       // 四捨五入するメソッド
-      let checkPoint = (playerReplaceGsyaPoint: string): string => {
-        let pointStr = playerReplaceGsyaPoint;
+      let checkPoint = (playerReplaceGosyaPoint: string): string => {
+        let pointStr = playerReplaceGosyaPoint;
         let pointNum = Number(pointStr);
         let pointStrAfterSisya = Math.round(pointNum / 1000) * 1000; //100の位を四捨五入
         let pointStrRe = pointStrAfterSisya.toString();
@@ -133,22 +133,22 @@ const Result: React.FC = () => {
         case 1:
           playerPoint = playerFinalResult + 10000; //式が値2に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
           playerIn[i].point = playerAfterGosyaPoint;
           break;
         case 2:
           playerPoint = playerFinalResult - 10000; //式が値3に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
           playerIn[i].point = playerAfterGosyaPoint;
           break;
         case 3:
           playerPoint = playerFinalResult - 20000; //式が値4に当てはまる場合に実行される
           playerBeforeGosyaPoint = playerPoint.toString();
-          playerReplaceGsyaPoint = checkGosya(playerBeforeGosyaPoint);
-          playerAfterGosyaPoint = checkPoint(playerReplaceGsyaPoint);
+          playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+          playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
           playerIn[i].point = playerAfterGosyaPoint;
           break;
       }
