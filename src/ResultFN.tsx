@@ -12,8 +12,6 @@ const playerInput = (playerIn: PLAYER[]) => {
   for (let i = 0; i < playerIn.length; i++) {
     // プロパティ系
     let playerRank = i + 1; // とりあえずランキングはindexが0スタートなので1を足して順位決め
-    let playerFinalResult = playerIn[i].result - 30000; // ３万点返ししたあとのポイント
-    let playerPoint: number = 0; // 文字列に変換する前のポイント
     let playerBeforeGosyaPoint: string = ""; // 五捨六入する前のポイント
     let playerReplaceGosyaPoint: string = ""; // 4を5に置換したあとのポイント
     let playerAfterGosyaPoint: string = ""; // 五捨六入したあとのポイント
@@ -96,24 +94,33 @@ const playerInput = (playerIn: PLAYER[]) => {
         playerIn[i].point = "";
         break;
       case 1:
-        playerPoint = playerFinalResult + 10000; //式が値2に当てはまる場合に実行される
-        playerBeforeGosyaPoint = playerPoint.toString();
+        playerBeforeGosyaPoint = playerIn[i].result.toString();
         playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+        playerReplaceGosyaPoint = (
+          Number(playerReplaceGosyaPoint) - 30000
+        ).toString(); // ３万点返ししたあとのポイントで上書き
         playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
+        playerAfterGosyaPoint = (Number(playerAfterGosyaPoint) + 10).toString(); //２ちゃの場合
         playerIn[i].point = playerAfterGosyaPoint;
         break;
       case 2:
-        playerPoint = playerFinalResult - 10000; //式が値3に当てはまる場合に実行される
-        playerBeforeGosyaPoint = playerPoint.toString();
+        playerBeforeGosyaPoint = playerIn[i].result.toString();
         playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+        playerReplaceGosyaPoint = (
+          Number(playerReplaceGosyaPoint) - 30000
+        ).toString(); // ３万点返ししたあとのポイントで上書き
         playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
+        playerAfterGosyaPoint = (Number(playerAfterGosyaPoint) - 10).toString(); //３ちゃの場合
         playerIn[i].point = playerAfterGosyaPoint;
         break;
       case 3:
-        playerPoint = playerFinalResult - 20000; //式が値4に当てはまる場合に実行される
-        playerBeforeGosyaPoint = playerPoint.toString();
+        playerBeforeGosyaPoint = playerIn[i].result.toString();
         playerReplaceGosyaPoint = checkGosya(playerBeforeGosyaPoint);
+        playerReplaceGosyaPoint = (
+          Number(playerReplaceGosyaPoint) - 30000
+        ).toString(); // ３万点返ししたあとのポイントで上書き
         playerAfterGosyaPoint = checkPoint(playerReplaceGosyaPoint);
+        playerAfterGosyaPoint = (Number(playerAfterGosyaPoint) - 20).toString(); //４ちゃの場合
         playerIn[i].point = playerAfterGosyaPoint;
         break;
     }
